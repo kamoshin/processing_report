@@ -6,9 +6,11 @@ AudioPlayer play_bgm;
 AudioPlayer over_bgm;
 
 PImage f1_img;
+PImage f2_img;
+PImage f3_img;
 PImage f4_img;
 
-int gseq = 0;
+int stage = 0;
 int px = 200;      //自機のx座標
 int py = 420;      //自機のy座標
 int pw = 40;      //自機の幅
@@ -33,7 +35,9 @@ int mcnt;      //メッセージ用カウンタ
 void setup(){
   size(600, 480);
   noStroke();
-  f1_img = loadImage("data/field3.png");
+  f1_img = loadImage("data/field1.png");
+  f2_img = loadImage("data/field2.png");
+  f3_img = loadImage("data/field3.png");  
   f4_img = loadImage("data/gameover.png");
   minim = new Minim(this);
   effect = minim.loadFile("jump07.mp3");
@@ -46,10 +50,16 @@ void setup(){
 //毎フレームごとに呼び出される関数
 void draw(){
   background(0);
-  if( gseq == 0){
+  if( stage == 0){
     gameTitle();      //ゲームタイトル画面
-  }else if( gseq == 1 ){
+  }else if( stage == 1 ){
     image(f1_img, 0, 0);
+    gamePlay();      //プレイ中の画面
+  }else if( stage == 2 ){
+    image(f2_img, 0, 0);
+    gamePlay();      //プレイ中の画面
+  }else if( stage == 3 ){
+    image(f3_img, 0, 0);
     gamePlay();      //プレイ中の画面
   }else{
     image(f4_img, 0, 0);
@@ -59,7 +69,7 @@ void draw(){
 
 //ユーザー定義関数
 void gameInit(){
-  gseq = 0;
+  stage = 0;
   bx = 100;
   by = 250;
   spdx = 2;
@@ -143,7 +153,7 @@ void ballMove(){
     play_bgm.pause();
     over_bgm.rewind();
     over_bgm.play();
-    gseq = 2;
+    stage = 4;
   }
   if(by < 0){      //画面上へ出た時
     spdy = -spdy;
@@ -158,22 +168,30 @@ void ballMove(){
     phit = 1;
     effect.play();
     effect.rewind();
+    if(bexist == 0){
+      stage += 1;
+      for(int i = 0; i < 25; i++){
+        blf[i] = 1;
+      }
+      score += 100;
+    }
   }
   if(by < py-30){
     phit = 0;
-  }
-  if(bexist == 0){
-    for(int i = 0; i < 25; i++){
-      blf[i] = 1;
-    }
-    score += 1;
   }
 }
 
 void blockDisp(){
   int xx, yy;
+  int zz = 0;
   bexist = 0;
-  for(int i=0; i<25; i++){
+  if(stage == 1){
+    zz = 1;
+  }else if(stage == 2){
+    zz =10;
+  }
+  bexist = 0;
+  for(int i=0; i < zz; i++){
     if(blf[i] == 1){
       fill((i/5)*15, 100, 100);
       xx = (i%5) * (blw+2);
@@ -215,10 +233,10 @@ void scoreDisp(){
 }
 
 void mousePressed(){      //クリックしたときに呼ばれる
-  if(gseq == 0){
-    gseq = 1;
+  if(stage == 0){
+    stage = 1;
   }
-  if(gseq == 2){
+  if(stage == 4){
     over_bgm.pause();
     gameInit();
   }
