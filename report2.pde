@@ -19,7 +19,7 @@ float spdy;
 int bw = 7;      //ボール　幅と高さ
 int bh = 7;
 int phit = 0;
-int blw = 78;
+int blw = 128;
 int blh = 30;
 int[] blf = new int[25];
 float lastx;
@@ -30,7 +30,7 @@ int mcnt;      //メッセージ用カウンタ
 
 //起動後に1度だけ処理される関数
 void setup(){
-  size(640, 480);
+  size(600, 480);
   noStroke();
   minim = new Minim(this);
   effect = minim.loadFile("jump07.mp3");
@@ -46,7 +46,7 @@ void draw(){
   if( gseq == 0){
     gameTitle();      //ゲームタイトル画面
   }else if( gseq == 1 ){
-    f1_img = loadImage("data/field1.jpg");
+    f1_img = loadImage("data/field2.jpg");
     image(f1_img, 0, 0);
     gamePlay();      //プレイ中の画面
   }else{
@@ -59,8 +59,8 @@ void gameInit(){
   gseq = 0;
   bx = 100;
   by = 250;
-  spdx = 4;
-  spdy = 4;
+  spdx = 2;
+  spdy = 2;
   phit = 0;
   for(int i=0; i<25; i++){
     blf[i] = 1;
