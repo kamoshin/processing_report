@@ -5,6 +5,8 @@ AudioPlayer effect;
 AudioPlayer play_bgm;
 AudioPlayer over_bgm;
 
+PImage f1_img;
+
 int gseq = 0;
 int px = 200;      //自機のx座標
 int py = 420;      //自機のy座標
@@ -28,7 +30,7 @@ int mcnt;      //メッセージ用カウンタ
 
 //起動後に1度だけ処理される関数
 void setup(){
-  size(400, 500);
+  size(640, 480);
   noStroke();
   minim = new Minim(this);
   effect = minim.loadFile("jump07.mp3");
@@ -44,6 +46,8 @@ void draw(){
   if( gseq == 0){
     gameTitle();      //ゲームタイトル画面
   }else if( gseq == 1 ){
+    f1_img = loadImage("data/field1.jpg");
+    image(f1_img, 0, 0);
     gamePlay();      //プレイ中の画面
   }else{
     gameOver();      //ゲームオーバー画面
@@ -55,8 +59,8 @@ void gameInit(){
   gseq = 0;
   bx = 100;
   by = 250;
-  spdx = 2;
-  spdy = 2;
+  spdx = 4;
+  spdy = 4;
   phit = 0;
   for(int i=0; i<25; i++){
     blf[i] = 1;
