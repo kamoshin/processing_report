@@ -5,6 +5,9 @@ AudioPlayer effect;
 AudioPlayer play_bgm;
 AudioPlayer over_bgm;
 
+PImage f1_img;
+PImage f4_img;
+
 int gseq = 0;
 int px = 200;      //自機のx座標
 int py = 420;      //自機のy座標
@@ -17,7 +20,7 @@ float spdy;
 int bw = 7;      //ボール　幅と高さ
 int bh = 7;
 int phit = 0;
-int blw = 78;
+int blw = 118;
 int blh = 30;
 int[] blf = new int[25];
 float lastx;
@@ -28,8 +31,10 @@ int mcnt;      //メッセージ用カウンタ
 
 //起動後に1度だけ処理される関数
 void setup(){
-  size(400, 500);
+  size(600, 480);
   noStroke();
+  f1_img = loadImage("data/field3.png");
+  f4_img = loadImage("data/gameover.png");
   minim = new Minim(this);
   effect = minim.loadFile("jump07.mp3");
   play_bgm = minim.loadFile("bgm_play.mp3");
@@ -44,8 +49,10 @@ void draw(){
   if( gseq == 0){
     gameTitle();      //ゲームタイトル画面
   }else if( gseq == 1 ){
+    image(f1_img, 0, 0);
     gamePlay();      //プレイ中の画面
   }else{
+    image(f4_img, 0, 0);
     gameOver();      //ゲームオーバー画面
   }
 }
@@ -78,7 +85,7 @@ void gameTitle(){
   if((mcnt%60) < 40){
     textSize(20);
     fill(20, 100, 100);
-    text("Click to start!", 140, 360);
+    text("Click to start!", 230, 360);
   }
 }
 
@@ -98,12 +105,12 @@ void gameOver(){
   scoreDisp();
   textSize(50);
   fill(1, 100, 100);
-  text("GAME OVER", 60, 300);
+  text("GAME OVER", 150, 300);
   mcnt++;
   if((mcnt%60) < 40){
     textSize(20);
     fill(20, 100, 100);
-    text("Click to retry!", 140, 360);
+    text("Click to retry!", 230, 360);
   }
 }
 
